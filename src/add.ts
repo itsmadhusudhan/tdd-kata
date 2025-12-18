@@ -19,7 +19,8 @@ export function add(input: string): number {
 
     const numbers = inputNumbers
         .split(delimiter ? delimiter : ",")
-        .flatMap((num) => num.split("\n").map(Number));
+        .flatMap((num) => num.split("\n").map(Number))
+        .filter((num) => num <= 1000);
 
     const negativeNumbers = numbers.filter((num) => num < 0);
 

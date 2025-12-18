@@ -40,6 +40,10 @@ describe("Test add function", () => {
             "Negatives not allowed: -10,-2,-3",
         );
     });
+
+    it("should ignore number greater than 1000", () => {
+        expect(add("1001,2,3")).toBe(5);
+    });
 });
 
 describe("Test extractInput", () => {
