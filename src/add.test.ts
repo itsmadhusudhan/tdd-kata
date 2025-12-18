@@ -94,7 +94,7 @@ describe("Test extractInput", () => {
     it("should return delimiter of any length", () => {
         const [regex, numbers] = extractInput("//[***]\n1***2***3");
 
-        expect(regex.toString()).toBe("/[***]/");
+        expect(regex.toString()).toBe("/[,|\\n|***]/");
         expect(numbers).toBe("1***2***3");
     });
 });

@@ -28,7 +28,7 @@ export const extractInput = (input: string): [RegExp, string] => {
                 .filter((d) => d !== undefined);
 
             if (bracketDelimiters.length > 0) {
-                delimiters = bracketDelimiters;
+                delimiters = delimiters.concat(bracketDelimiters);
             } else {
                 delimiters.push(delimitersMatch);
             }
