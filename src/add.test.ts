@@ -32,6 +32,14 @@ describe("Test add function", () => {
     it("should return result with different delimiter and \n", () => {
         expect(add("//;\n1;2\n5")).toBe(8);
     });
+
+    it("should throw error for negative numbers", () => {
+        expect(() => add("-1")).toThrow("Negatives not allowed: -1");
+        expect(() => add("1,-2")).toThrow("Negatives not allowed: -2");
+        expect(() => add("-10,-2,-3")).toThrow(
+            "Negatives not allowed: -10,-2,-3",
+        );
+    });
 });
 
 describe("Test extractInput", () => {
