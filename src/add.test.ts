@@ -1,4 +1,4 @@
-import { add } from "./add";
+import { add, extractInput } from "./add";
 
 describe("Test add function", () => {
     it("should return 0 when the input is an empty string", () => {
@@ -23,5 +23,23 @@ describe("Test add function", () => {
 
     it("should return sum for both \n and , delimiter", () => {
         expect(add("1\n2,3")).toBe(6);
+    });
+
+    it("should return three where the default delimiter is `;`", () => {
+        expect(add("//;\n1;2")).toBe(3);
+    });
+
+    it("should return result with different delimiter and \n", () => {
+        expect(add("//;\n1;2\n5")).toBe(8);
+    });
+});
+
+describe("Test extractInput", () => {
+    it("should return the delimiter and the input numbers", () => {
+        expect(extractInput("//;\n1;2")).toEqual([";", "1;2"]);
+    });
+
+    it("should return the input numbers when there is no delimiter", () => {
+        expect(extractInput("1,2")).toEqual([undefined, "1,2"]);
     });
 });
