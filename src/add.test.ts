@@ -16,4 +16,12 @@ describe("Test add function", () => {
     it("should return the sum of five numbers when the input is 5 numbers", () => {
         expect(add("1,2,3,4,5")).toBe(15);
     });
+
+    it("should return sum for \n delimiter", () => {
+        expect(add("1\n2\n3\n4\n5")).toBe(15);
+    });
+
+    it("should return sum for both \n and , delimiter", () => {
+        expect(add("1\n2,3")).toBe(6);
+    });
 });
