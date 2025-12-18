@@ -44,6 +44,10 @@ describe("Test add function", () => {
     it("should ignore number greater than 1000", () => {
         expect(add("1001,2,3")).toBe(5);
     });
+
+    it("should allow delimiters of any length", () => {
+        expect(add("//[***]\n1***2***3")).toBe(6);
+    });
 });
 
 describe("Test extractInput", () => {
@@ -53,5 +57,12 @@ describe("Test extractInput", () => {
 
     it("should return the input numbers when there is no delimiter", () => {
         expect(extractInput("1,2")).toEqual([undefined, "1,2"]);
+    });
+
+    it("should return relimiter of any length", () => {
+        expect(extractInput("//[***]\n1***2***3")).toEqual([
+            "***",
+            "1***2***3",
+        ]);
     });
 });

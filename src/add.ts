@@ -1,13 +1,15 @@
 export const extractInput = (input: string) => {
-    const delimiterRegex = /^\/\/(.+)\n([\s\S]*)/;
-
+    /**
+     * this regex capture both the groups with single and multiple delimiter
+     */
+    const delimiterRegex = /^\/\/(?:\[(.+?)\]|(.+?))\n([\s\S]*)/;
     const matches = input.match(delimiterRegex);
 
     if (!matches) {
         return [undefined, input];
     }
 
-    return [matches?.[1], matches?.[2] ?? input];
+    return [matches?.[1] ?? matches?.[2], matches?.[3] ?? input];
 };
 
 export function add(input: string): number {
