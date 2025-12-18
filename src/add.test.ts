@@ -45,6 +45,10 @@ describe("Test add function", () => {
         it("should allow multiple delimiters with different lengths", () => {
             expect(add("//[*][%]\n10*20%30")).toBe(60);
         });
+
+        it("should allow multiple delimiters with length longer than one char", () => {
+            expect(add("//[**][%%]\n10**20%%30")).toBe(60);
+        });
     });
 
     it("should throw error for negative numbers", () => {
