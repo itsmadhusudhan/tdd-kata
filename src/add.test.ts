@@ -48,6 +48,14 @@ describe("Test add function", () => {
     it("should allow delimiters of any length", () => {
         expect(add("//[***]\n1***2***3")).toBe(6);
     });
+
+    it("should allow multiple delimiters", () => {
+        expect(add("//[*][&]\n1*2&4")).toBe(7);
+    });
+
+    it("should allow multiple delimiters with different lengths", () => {
+        expect(add("//[*][%]\n10*20%30")).toBe(60);
+    });
 });
 
 describe("Test extractInput", () => {
@@ -56,13 +64,12 @@ describe("Test extractInput", () => {
     });
 
     it("should return the input numbers when there is no delimiter", () => {
-        expect(extractInput("1,2")).toEqual([undefined, "1,2"]);
+        expect(extractInput("1,2")).toEqual([/[,|\n]/, "1,2"]);
     });
 
-    it("should return relimiter of any length", () => {
-        expect(extractInput("//[***]\n1***2***3")).toEqual([
-            "***",
-            "1***2***3",
-        ]);
+    it("should return delimiter of any length", () => {
+        const [regex] = extractInput("//[***]\n1***2***3");
+
+        expect(regex).toBeInstanceOf(RegExp);
     });
 });

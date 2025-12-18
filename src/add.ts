@@ -1,15 +1,33 @@
-export const extractInput = (input: string) => {
+export const inputMatchRegex = /^\/\/((?:\[[^\]]+\])+|.)\n([\s\S]+)/;
+export const delimiterRegex = /\[(.*?)\]/g;
+
+export const extractInput = (input: string): [string | RegExp, string] => {
     /**
      * this regex capture both the groups with single and multiple delimiter
      */
-    const delimiterRegex = /^\/\/(?:\[(.+?)\]|(.+?))\n([\s\S]*)/;
-    const matches = input.match(delimiterRegex);
+    const matches = input.match(inputMatchRegex);
+    const initialRegex = /[,|\n]/;
 
     if (!matches) {
-        return [undefined, input];
+        return [initialRegex, input];
     }
 
-    return [matches?.[1] ?? matches?.[2], matches?.[3] ?? input];
+    const delimitersMatch = matches[1];
+
+    if (!delimitersMatch) {
+        return [initialRegex, input];
+    }
+
+    const delimiters = [...delimitersMatch.matchAll(delimiterRegex)].map(
+        (m) => m[1],
+    );
+
+    const delimitersString =
+        delimiters.length > 0
+            ? new RegExp(`[${delimiters.join("|")}|\n]`)
+            : delimitersMatch;
+
+    return [delimitersString, matches?.[2] ?? input];
 };
 
 export function add(input: string): number {
