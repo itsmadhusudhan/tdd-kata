@@ -62,17 +62,21 @@ describe("Test add function", () => {
 
 describe("Test extractInput", () => {
     it("should return the delimiter and the input numbers", () => {
-        expect(extractInput("//;\n1;2")).toEqual([";", "1;2"]);
+        const [regex, numbers] = extractInput("//;\n1;2");
+        expect(regex.toString()).toBe("/[,|\\n|;]/");
+        expect(numbers).toBe("1;2");
     });
 
     it("should return the input numbers when there is no delimiter", () => {
-        expect(extractInput("1,2")).toEqual([/[,|\n]/, "1,2"]);
+        const [regex, numbers] = extractInput("1,2");
+        expect(regex.toString()).toBe("/[,|\\n]/");
+        expect(numbers).toBe("1,2");
     });
 
     it("should return delimiter of any length", () => {
         const [regex, numbers] = extractInput("//[***]\n1***2***3");
 
-        expect(regex.toString()).toBe("/[***|\\n]/");
+        expect(regex.toString()).toBe("/[***]/");
         expect(numbers).toBe("1***2***3");
     });
 });

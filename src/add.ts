@@ -1,33 +1,41 @@
+// regexp splits the input string into bracket delimiters and numbers
 export const inputMatchRegex = /^\/\/((?:\[[^\]]+\])+|.)\n([\s\S]+)/;
+// regex extracts the delimiters inside []
 export const delimiterRegex = /\[(.*?)\]/g;
 
-export const extractInput = (input: string): [string | RegExp, string] => {
+export const extractInput = (input: string): [RegExp, string] => {
     /**
      * this regex capture both the groups with single and multiple delimiter
      */
     const matches = input.match(inputMatchRegex);
-    const initialRegex = /[,|\n]/;
+    let delimiters: string[] = [",", "\n"];
+    let numbers = input;
 
-    if (!matches) {
-        return [initialRegex, input];
+    if (matches) {
+        const delimitersMatch = matches[1];
+
+        // get the number match
+        if (matches[2]) numbers = matches[2];
+
+        // extract the delimiters
+        if (delimitersMatch) {
+            const bracketDelimiters = [
+                ...delimitersMatch.matchAll(delimiterRegex),
+            ]
+                .map((m) => m[1])
+                .filter((d) => d !== undefined);
+
+            if (bracketDelimiters.length > 0) {
+                delimiters = bracketDelimiters;
+            } else {
+                delimiters.push(delimitersMatch);
+            }
+        }
     }
 
-    const delimitersMatch = matches[1];
+    const delimiterPattern = new RegExp(`[${delimiters.join("|")}]`);
 
-    if (!delimitersMatch) {
-        return [initialRegex, input];
-    }
-
-    const delimiters = [...delimitersMatch.matchAll(delimiterRegex)].map(
-        (m) => m[1],
-    );
-
-    const delimitersString =
-        delimiters.length > 0
-            ? new RegExp(`[${delimiters.join("|")}|\n]`)
-            : delimitersMatch;
-
-    return [delimitersString, matches?.[2] ?? input];
+    return [delimiterPattern, numbers];
 };
 
 export function add(input: string): number {
@@ -35,11 +43,11 @@ export function add(input: string): number {
         return 0;
     }
 
-    const [delimiter, inputNumbers = input] = extractInput(input);
+    const [delimiterPattern, inputNumbers = input] = extractInput(input);
 
     const numbers = inputNumbers
-        .split(delimiter ? delimiter : ",")
-        .flatMap((num) => num.split("\n").map(Number))
+        .split(delimiterPattern)
+        .map(Number)
         .filter((num) => num <= 1000);
 
     const negativeNumbers = numbers.filter((num) => num < 0);
