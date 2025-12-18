@@ -17,20 +17,34 @@ describe("Test add function", () => {
         expect(add("1,2,3,4,5")).toBe(15);
     });
 
-    it("should return sum for \n delimiter", () => {
-        expect(add("1\n2\n3\n4\n5")).toBe(15);
-    });
+    describe("Test Customer delimiter", () => {
+        it("should return sum for \n delimiter", () => {
+            expect(add("1\n2\n3\n4\n5")).toBe(15);
+        });
 
-    it("should return sum for both \n and , delimiter", () => {
-        expect(add("1\n2,3")).toBe(6);
-    });
+        it("should return sum for both \n and , delimiter", () => {
+            expect(add("1\n2,3")).toBe(6);
+        });
 
-    it("should return three where the default delimiter is `;`", () => {
-        expect(add("//;\n1;2")).toBe(3);
-    });
+        it("should return three where the default delimiter is `;`", () => {
+            expect(add("//;\n1;2")).toBe(3);
+        });
 
-    it("should return result with different delimiter and \n", () => {
-        expect(add("//;\n1;2\n5")).toBe(8);
+        it("should return result with different delimiter and \n", () => {
+            expect(add("//;\n1;2\n5")).toBe(8);
+        });
+
+        it("should allow delimiters of any length", () => {
+            expect(add("//[***]\n1***2***3")).toBe(6);
+        });
+
+        it("should allow multiple delimiters", () => {
+            expect(add("//[*][&]\n1*2&4")).toBe(7);
+        });
+
+        it("should allow multiple delimiters with different lengths", () => {
+            expect(add("//[*][%]\n10*20%30")).toBe(60);
+        });
     });
 
     it("should throw error for negative numbers", () => {
@@ -43,18 +57,6 @@ describe("Test add function", () => {
 
     it("should ignore number greater than 1000", () => {
         expect(add("1001,2,3")).toBe(5);
-    });
-
-    it("should allow delimiters of any length", () => {
-        expect(add("//[***]\n1***2***3")).toBe(6);
-    });
-
-    it("should allow multiple delimiters", () => {
-        expect(add("//[*][&]\n1*2&4")).toBe(7);
-    });
-
-    it("should allow multiple delimiters with different lengths", () => {
-        expect(add("//[*][%]\n10*20%30")).toBe(60);
     });
 });
 
