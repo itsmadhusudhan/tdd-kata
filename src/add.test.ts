@@ -58,6 +58,20 @@ describe("Test add function", () => {
     it("should ignore number greater than 1000", () => {
         expect(add("1001,2,3")).toBe(5);
     });
+
+    describe("Edge cases", () => {
+        it("should handle extra trailing comma", () => {
+            expect(add("1,2,")).toBe(3);
+        });
+
+        it("should handle extra trailing delimiter with custom delimiter", () => {
+            expect(add("//[*]\n1*2*")).toBe(3);
+        });
+
+        it("should return 0 for only delimiter without numbers", () => {
+            expect(add("//[*]\n")).toBe(0);
+        });
+    });
 });
 
 describe("Test extractInput", () => {

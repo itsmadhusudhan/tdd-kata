@@ -9,13 +9,15 @@ export const extractInput = (input: string): [RegExp, string] => {
      */
     const matches = input.match(inputMatchRegex);
     let delimiters: string[] = [",", "\n"];
-    let numbers = input;
+    let numbers = "";
 
     if (matches) {
         const delimitersMatch = matches[1];
 
         // get the number match
-        if (matches[2]) numbers = matches[2];
+        if (matches[2]) {
+            numbers = matches[2];
+        }
 
         // extract the delimiters
         if (delimitersMatch) {
@@ -31,6 +33,8 @@ export const extractInput = (input: string): [RegExp, string] => {
                 delimiters.push(delimitersMatch);
             }
         }
+    } else {
+        numbers = input;
     }
 
     const delimiterPattern = new RegExp(`[${delimiters.join("|")}]`);
@@ -43,7 +47,11 @@ export function add(input: string): number {
         return 0;
     }
 
-    const [delimiterPattern, inputNumbers = input] = extractInput(input);
+    const [delimiterPattern, inputNumbers] = extractInput(input);
+
+    if (inputNumbers === "") {
+        return 0;
+    }
 
     const numbers = inputNumbers
         .split(delimiterPattern)
